@@ -4,6 +4,13 @@ from models import TodoItem
 from serializers import TodoItemSerializer
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
+from forms import RegistrationForm
+from models import *
+from django.http import HttpResponse
+
+import json
 
 class TodoItemViewSet(viewsets.ModelViewSet):
     """
@@ -32,6 +39,7 @@ def register(request):
         user = User.objects.create_user(form.cleaned_data["username"],
                                         form.cleaned_data["email"],
                                         form.cleaned_data["password"])
+        print user
         user.save()
 
         return JsonResponse({"success": "User registered."}, status=201)
