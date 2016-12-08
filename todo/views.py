@@ -2,7 +2,8 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from models import TodoItem
 from serializers import TodoItemSerializer
-
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 class TodoItemViewSet(viewsets.ModelViewSet):
     """
@@ -10,3 +11,29 @@ class TodoItemViewSet(viewsets.ModelViewSet):
     """
     queryset = TodoItem.objects.all()
     serializer_class = TodoItemSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+
+@require_http_methods(["POST"])
+@csrf_exempt
+def register(request):
+    """
+    API endpoint to register a new user.
+    """
+    try:
+        payload = json.loads(request.body)
+    except ValueError:
+        return JsonResponse({"error": "Unable to parse request body"}, status=400)
+
+    form = RegistrationForm(payload)
+
+    if form.is_valid():
+        user = User.objects.create_user(form.cleaned_data["username"],
+                                        form.cleaned_data["email"],
+                                        form.cleaned_data["password"])
+        user.save()
+
+        return JsonResponse({"success": "User registered."}, status=201)
+
+    return HttpResponse(form.errors.as_json(), status=400, content_type="application/json")

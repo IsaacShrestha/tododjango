@@ -13,6 +13,7 @@ router.register("todos", TodoItemViewSet)
 urlpatterns = [
 	url(r'^api-auth-token/', obtain_auth_token),
     url(r'^api/', include(router.urls)),
+    url(r'^api-register/', register),
 ]
 
 
