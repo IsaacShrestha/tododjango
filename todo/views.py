@@ -1,15 +1,20 @@
 from django.shortcuts import render
-from rest_framework import viewsets
-from models import TodoItem
-from serializers import TodoItemSerializer
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+from django.contrib.auth.models import User
+
+from rest_framework import viewsets
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import *
+from rest_framework.authentication import *
+from rest_framework.decorators import *
+
+from models import TodoItem
+from serializers import TodoItemSerializer
 from forms import RegistrationForm
 from models import *
-from django.http import HttpResponse
-
+from permissions import BelongsToUser
 import json
 
 class TodoItemViewSet(viewsets.ModelViewSet):
@@ -19,8 +24,13 @@ class TodoItemViewSet(viewsets.ModelViewSet):
     queryset = TodoItem.objects.all()
     serializer_class = TodoItemSerializer
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, BelongsToUser,)
 
+    def get_queryset(self):
+	    return TodoItem.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+	    serializer.save(user=user.request.user)
 
 @require_http_methods(["POST"])
 @csrf_exempt
