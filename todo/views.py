@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
 
 from rest_framework import viewsets
@@ -30,7 +30,7 @@ class TodoItemViewSet(viewsets.ModelViewSet):
 	    return TodoItem.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
-	    serializer.save(user=user.request.user)
+	    serializer.save(user=self.request.user)
 
 @require_http_methods(["POST"])
 @csrf_exempt
