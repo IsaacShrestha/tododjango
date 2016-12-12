@@ -27,10 +27,10 @@ class TodoItemViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated, BelongsToUser,)
 
     def get_queryset(self):
-	    return TodoItem.objects.filter(user=self.request.user)
+        return TodoItem.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
-	    serializer.save(user=self.request.user)
+        serializer.save(user=self.request.user)
 
 @require_http_methods(["POST"])
 @csrf_exempt
