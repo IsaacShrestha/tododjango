@@ -1,9 +1,3 @@
-# Karyalaya django / tododjango
-
-This django api is built as a backend for ember application Karyalaya present in the repository https://github.com/IsaacShrestha/todoember.git. 
-Kindly clone this repository and follow the installation guide mentioned there to view the complete functions of the application.
-
-
 #Prerequisites to run this application
 1) python 2.7    &   
 2) django 1.9.8
@@ -29,13 +23,4 @@ than on your test server. Please follow the steps mentioned below
 * View the app in your browser at localhost:8000
 
 
-#User guide
 
-This application allows you to do the followings:
-* Register your account
-* Login using the username and password
-* Add the jobs 
-
-When you come to the website for the first time, to begin using the service you need to register as either a job seeker or a job poster. Once, you are registered you can login using username and password.
-
-In this version only job poster's panel is fully functional. As soon as you login as job poster, your dashboard will be empty. By choosing add new job you can add the job. You can select add, edit and delete the jobs from your dashboard as a job poster.
